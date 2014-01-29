@@ -1,3 +1,10 @@
 ReadMe
 
-I place here some examples of playbooks I created and tested for my servers. 
+Basic PHP dev vagrant box
+
+Provisions by ansible
+
+Includes
+- php 5.5
+- nginx 1.4.0
+- mysql 5.5
