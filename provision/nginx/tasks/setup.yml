@@ -1,0 +1,27 @@
+--- 
+- name: update apt repo
+  apt: update-cache=yes
+  
+- name: install python-software-properties
+  apt: name='python-software-properties' state=installed
+
+- name: "add nginx ppa if it ubuntu 10.04 and up"
+  apt_repository: repo=ppa:nginx/stable
+  when: "{{ is_ubuntu }} and {{ is_10_up }}"
+
+- name: update apt repo
+  apt: update-cache=yes
+
+- name: install nginx 
+  apt: name=nginx state=installed
+
+- name: copy fixed init for nginx
+  copy: src=nginx/files/nginx.init dest=/etc/init.d/nginx mode=0755  backup=yes
+
+- name: service nginx 
+  service: name=nginx state=started 
+
+- name: write nginx.conf 
+  template: src='nginx/templates/nginx.conf.j2' dest='/etc/nginx/nginx.conf' backup=yes
+  notify:
+    - restart nginx
